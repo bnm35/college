@@ -1,0 +1,6 @@
+Indian,Butter chicken,350
+Indian,Samosas,200
+Indian,Momos,150
+Italian,Pasta carbonara,300
+Italian,Pizza,250
+Japanese,Sushi,250
