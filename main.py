@@ -578,21 +578,21 @@ def put_order():
     else : print("Thats not correct!!!")
 
 def customer_menu():
-        print("Customer privileges:")
-        print("1. View & order food (Add, Edit, Delete) and pay to confirm.")
-        print("2. View order status")
-        print("3. Send feedback to administrator")
-        print("4. Update own profile")
-        choice = input("Enter your choice: ")
-        if choice == "1":
-            put_order()
-        elif choice == "2":
-            see_status()
-        elif choice == "3":
-                give_feedback()
-        elif choice == "4":
-            updating_profile()
-        else:
+    print("Customer privileges:")
+    print("1. View & order food (Add, Edit, Delete) and pay to confirm.")
+    print("2. View order status")
+    print("3. Send feedback to administrator")
+    print("4. Update own profile")
+    choice = input("Enter your choice: ")
+    if choice == "1":
+        put_order()
+    elif choice == "2":
+        see_status()
+    elif choice == "3":
+            give_feedback()
+    elif choice == "4":
+        updating_profile()
+    else:
             print("Wrong choice !!!")
 
 # this is the main block that controls flow of this program
