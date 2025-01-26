@@ -1,3 +1,2 @@
 cabbage,3kg
 carrot,2kg
-onion,4kg

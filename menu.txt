@@ -4,3 +4,5 @@ Indian,Momos,150
 Italian,Pasta carbonara,300
 Italian,Pizza,250
 Japanese,Sushi,250
+Indian,Butter Chicken,400
+Bengali,Dosa,50

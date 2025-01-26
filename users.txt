@@ -1,0 +1,4 @@
+bishesh,bishesh,administrator
+smarika,smarika,manager
+rajita,rajita1,chef
+rojit,rojit,customer
