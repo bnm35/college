@@ -2,7 +2,10 @@ Indian,Butter chicken,350
 Indian,Samosas,200
 Indian,Momos,150
 Italian,Pasta carbonara,300
-Italian,Pizza,250
+Italian,pizza,350
 Japanese,Sushi,250
 Indian,Butter Chicken,400
 Bengali,Dosa,50
+Indian,Fish curry,100
+Indian,Naan,20
+Indian,Roti,20
