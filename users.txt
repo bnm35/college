@@ -1,9 +1,4 @@
-bishesh123,bishesh123,administrator
+bishesh,bishesh,administrator
 smarika,smarika,manager
-niraj,niraj,manager
-rajita,rajita,chef
-rajat,rajat,chef
-raju,raju,chef
-neeju,neeju,administrator
-deepana,deepana,customer
-anju,anju,customer
+rajita,rajita1,chef
+rojit,rojit,customer
