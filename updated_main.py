@@ -14,7 +14,8 @@ def login():
                     s_user, s_pass, role = l.strip().split(",")
                     if user == s_user and password == s_pass:
                         username = user
-                        print(f"Logged in successfully.\nRole: {role}")
+                        print(f"Logged in successfully.\nWelcome {username}\nRole: {role}")
+                        print()
                         return role 
         except FileNotFoundError:
             print("User file not found.")
@@ -47,10 +48,10 @@ def fire_staff():
     print("Current staff members:")
     try:
         with open("users.txt", "r") as file:
-            print(f"{'Username':<20} {'Role':<15}")  # Header for alignment
+            print(f"{'Username':<20} {'Role':<15}") 
             for line in file:
                 username, _, role = line.strip().split(",")
-                print(f"{username:<20} {role:<15}")  # Even spacing
+                print(f"{username:<20} {role:<15}") 
     except FileNotFoundError:
         print("User file not found.")
     while True:
@@ -296,11 +297,11 @@ def delete_customer():
         print("Current customers:")
         try:
             with open("users.txt", "r") as file:
-                print(f"{'Username':<20}")  # Header for alignment
+                print(f"{'Username':<20}")  # this will give the header in an aligned form
                 for line in file:
                     username, _, role = line.strip().split(",")
                     if role == "customer":
-                        print(f"{username:<20}")  # Even spacing
+                        print(f"{username:<20}")  # even spacing between words
         except FileNotFoundError:
             print("User file not found.")
         
@@ -377,6 +378,72 @@ def edit_customer():
             return
 
 def view_menu():
+    menu = {}
+    try:
+        with open("menu.txt", "r") as file:
+            for l in file:
+                category, dish, price = l.strip().split(',')
+                if category not in menu:
+                    menu[category] = []
+                menu[category].append(f"{dish}: {price}")  
+    except FileNotFoundError:
+        print("Menu file not found.")
+        return  # exit if file not gound
+    for category, dishes in menu.items():
+        print(f"\n{category} Menu:")
+        for dish in dishes:
+            print(f"  - {dish}")
+
+    input("\nPress Enter to return to the options menu...")  
+
+
+def add_dishes():
+    while True:
+        menu = {}  # Dictionary to store menu categories
+        try:
+            # Read and store the current menu
+            with open("menu.txt", "r") as file:
+                for l in file:
+                    category,dish,price = l.strip().split(',')
+                    if category not in menu:
+                        menu[category] = []
+                    menu[category].append(f"{dish}: {price}")
+
+        except FileNotFoundError:
+            print("Menu file not found. A new menu will be created.")
+        if menu:
+            print("\nCurrent Menu:")
+            for category, dishes in menu.items():
+                print(f"\n{category} Menu:")
+                for dish in dishes:
+                    print(f"  - {dish}")
+
+        # Take user input for new dish
+        category = input("\nEnter the category of the dish you want to add: ").capitalize()
+        dish = input("Enter the name of the dish you want to add: ").capitalize()
+        price = input("Enter the price of the dish you want to add: ")
+
+        # Validate price input (ensure it's a positive number)
+        if not price.isdigit():
+            print("Invalid price! Please enter a valid number.")
+            continue
+
+        try:
+            # Append the new dish to the file
+            with open("menu.txt", "a") as file:
+                file.write(f"{category},{dish},{price}\n")
+            print(f"Dish '{dish}' added successfully to {category} menu.")
+        except Exception as e:
+            print(f"Error adding dish: {e}")
+
+        # Ask if the user wants to add another dish
+        again = input("\nDo you want to add more dishes? (yes/no): ").strip().lower()
+        if again != "yes":
+            print("Returning to main menu...")
+            return
+
+def delete_dishes():
+    while True:
         menu = {}
         try:
             with open("menu.txt", "r") as file:
@@ -384,40 +451,7 @@ def view_menu():
                     category, dish, price = l.strip().split(',')
                     if category not in menu:
                         menu[category] = []
-                    menu[category].append(f"{dish}: {price}")
-        except FileNotFoundError:
-            print("Menu file not found.")
-        for category, dishes in menu.items():
-            print(f"{category} Menu:\t")
-            for dish in dishes:
-                print(f"{dish}")
-        input("Press Enter to return to the options menu...")
-
-def add_dishes():
-        while True:
-            category = input("Enter the category of the dish you want to add: ").capitalize()
-            dish = input("Enter the name of the dish you want to add: ").capitalize()
-            price = input("Enter the price of the dish you want to add: ")
-            try:
-                with open("menu.txt", "a") as file:
-                    file.write(f"{category},{dish},{price}\n")
-                print(f"Dish added successfully to the menu.")
-            except Exception as e:
-                print(f"Error adding dish: {e}")
-            again = input("Do you want to add more dishes? (yes/no): ").strip().lower()
-            if again!= "yes":
-                return
-
-def delete_dishes():
-    menu = {}
-    while True:
-        try:
-            with open("menu.txt", "r") as file:
-                for l in file:
-                    category, dish, price = l.strip().split(',')
-                    if category not in menu:
-                        menu[category] = []
-                    menu[category].append(f"{dish}: {price}")
+                        menu[category].append(f"{dish}: {price}")
         except FileNotFoundError:
             print("Menu file not found.")
         for category, dishes in menu.items():
@@ -462,7 +496,7 @@ def edit_menu():
             print(f"{category} Menu:\t")
             for dish in dishes:
                 print(f"{dish}")
-            print()
+        print()
         d= input("Enter the name of the dish you want to edit: ").strip().capitalize()
         found = False
         updated = [] 
@@ -647,6 +681,17 @@ def request_edit():
 #to place an order this function will be used
 def a_order():
     while True:
+        try:
+            with open("orders.txt", "r") as file:
+                lines = file.readlines()
+                print("Orders:")
+                for l in lines:
+                    o_id,c_name,dishes,q,status = l.strip().split(",")
+                    print(f"Order ID: {o_id}, Customer: {c_name}, Dishes: {dishes}, Quantity: {q}, Status: {status}")        
+        except FileNotFoundError:
+            print("Orders file not found.")
+        print("Order for the above menu:")
+        print()
         dishes = input("Enter the dishes you want to order: ")
         o_id = random.randint(1,999)
         q = input("Quantity: ")
@@ -726,19 +771,18 @@ def e_order():
 
 #this function is for the customer to see the status of their order
 def see_status():
-    o_id = input("Enter the order ID: ")
+    o_name = input("Enter your username: ")
     found = False
     try:
         with open("orders.txt", "r") as file:
             lines = file.readlines()
             for l in lines:
                 order_id, c_name, dishes, q, status = l.strip().split(",")
-                if order_id == o_id:
+                if username in c_name:
                     found = True
                     print(f"Order ID: {order_id}, Customer: {c_name}, Dishes: {dishes}, Quantity: {q}, Status: {status}")
-                    break
         if not found:
-            print(f"No order with order ID {o_id} found.")
+            print(f"No order for {o_name} found.")
     except FileNotFoundError:
         print("Orders file not found.")
     input("Press enter to view main menu...")
@@ -764,22 +808,21 @@ def give_feedback():
         except FileNotFoundError:
             print("Users file not found.")
         
-        again = input("Do you want to give feedback for another order? (yes/no): ").strip().lower()
+        again = input("Do you want to give another feedback? (yes/no): ").strip().lower()
         if again != "yes":
             return 
 
 # access to administration's options
 def admin_menu():
     while True:
-        print("Admin privileges:\n")
+        print("Admin privileges:")
         print("Choose an option: ")
         print("1. Manage staff")
         print("2. View sales report based on month or by chef")
         print("3. View feedback sent by customers")
         print("4. Update profile")
-        print("5. Logout")
-
-        choice = input("Enter your choice: ")
+        print("5. Logout\n")
+        choice = input("Choose an option from 1-5: ")
         print()
         if choice == "1":
             manage_staff()
@@ -793,6 +836,7 @@ def admin_menu():
             print("Logging out.....")
             time.sleep(1)
             print("Logged out!!!")
+            print()
             break
         else:
             print("not in option")
@@ -807,7 +851,7 @@ def manager_menu():
         print("3. View ingredients list request by chef")
         print("4. Update own profile")
         print("5. Logout")
-        choice = input("Enter your choice: ")
+        choice = input("Choose and option form 1-5: ")
         print()
         if choice == "1":
             manage_customer()
@@ -815,7 +859,6 @@ def manager_menu():
             manage_menu()
         elif choice == "3":
             ingredients()
-            # input("Press Enter to return to the main menu...")
         elif choice == "4":
             updating_profile()
         elif choice == "5":
@@ -833,8 +876,8 @@ def manage_menu():
         print("2. Do you want to add a cuisine dishes and price:")
         print("3. Do you want to delete a dish:")
         print("4. Do you want to edit the menu:")
-        print("5. Go back to the main menu")
-        choice = input("Enter a choice from 1 to 5: ")
+        print("5. Back\n")
+        choice = input("Choose and option from 1-5: ")
         print()
         if choice == "1":
             view_menu()
@@ -845,6 +888,8 @@ def manage_menu():
         elif choice == "4":
             edit_menu()
         elif choice == "5":
+            print("Exiting manage menu...")
+            time.sleep(1)
             break
         else: 
             print("not a valid choice!!")
@@ -852,49 +897,70 @@ def manage_menu():
 # a function to access functions that manage staffs
 def manage_staff():
     while True:
-        choice = input("Do you want to hire, fire or edit staff? (type 'exit' to go back): ").lower()
+        print("Manage staff menu:- ")
+        print("1. Do you want to hire a new staff member?")
+        print("2. Do you want to fire a staff member?")
+        print("3. Do you want to edit staff information?")
+        print("4. Exit")
+        choice = input("Choose an option from 1-4: ").lower()
         print()
-        if choice == "hire":
+        if choice == "1":
             hire_staff()
-        elif choice == "fire":
+        elif choice == "2":
             fire_staff()
-        elif choice == "edit":
+        elif choice == "2":
             edit_staff()
-        elif choice == "exit":
+        elif choice == "4":
+            print()
             break
         else:
-            print("Something is wrong. Please use 'hire', 'fire' or 'edit'.")
+            print("Something is wrong in your selection")
+            print()
 
 # a function to access functions that manage customers
 def manage_customer():
     while True:
-        choice = input("Do you want to add, delete, or edit a customer? (type 'exit' to go back)")
+        print("Manage customer menu:- ")
+        print("1. Do you want to add a customer?")
+        print("2. Do you want to delete a customer?")
+        print("3. Do you want to edit a customer info?")
+        print("4. Exit")
+        choice = input("Choose an option form 1-4: ")
         print()
-        if choice == "add":
+        if choice == "1":
             add_customer()
-        elif choice == "delete":
+        elif choice == "2":
             delete_customer()
-        elif choice == "edit":
+        elif choice == "3":
             edit_customer()
-        elif choice == "exit":
+        elif choice == "4":
+            print()
             break
         else: 
-            print("Invalid choice.")
+            print("Invalid choice!!!")
+            print()
 
 def request_ing():
     while True:
-        choice = input("Do you want to add, delete, or edit ingredient request? (type 'exit' to go back): ")
+        print("Ingredient Request Menu:")
+        print("1. Request ingredients")
+        print("2. Delete ingredient request")
+        print("3. Edit ingredient request")
+        print("4. Exit")
+        choice = input("Choose an option from 1-4: ")
         print()
-        if choice == "add":
+        if choice == "1":
             request_add()
-        elif choice == "delete":
+        elif choice == "2":
             request_del()
-        elif choice == "edit":
+        elif choice == "3":
             request_edit()
-        elif choice == "exit":
+        elif choice == "4":
+            print()
             break
         else: 
             print("There is something wrong. Please check your entry again")
+            print()
 
 def chef_menu():
     while True:
@@ -904,7 +970,7 @@ def chef_menu():
         print("3. Request ingredients (Add, Edit, Delete).")
         print("4. Update own profile")
         print("5. Logout")
-        choice = input("Enter your choice: ")
+        choice = input("Choose and option form 1-5: ")
         print()
         if choice == "1":
             view_orders()
@@ -918,24 +984,33 @@ def chef_menu():
             print("Logging out.....")
             time.sleep(1)
             print("Logged out!!!")
+            print()
             break
         else:
             print("Not in option")
+            print()
 
 def put_order():
     while True:
-        choice = input("Do you want to add, delete or edit your order? (type 'exit' to go back): ")
-        print()
-        if choice == "add":
+        print("Order Menu:")
+        print("1. Add an order")
+        print("2. Delete an order")
+        print("3. Edit an order")
+        print("4. Exit")
+        choice = input("Choose an option form 1-5: ")
+        print("Choose an option form 1-4: ")
+        if choice == "1":
             a_order()
-        elif choice == "delete":
+        elif choice == "2":
             d_order()
-        elif choice == "edit":
+        elif choice == "3":
             e_order()
-        elif choice == "exit":
+        elif choice == "4":
+            print()
             break
         else: 
             print("That's not correct!!!")
+            print()
 
 def customer_menu():
     while True:
@@ -945,7 +1020,7 @@ def customer_menu():
         print("3. Write  feedback to administrator")
         print("4. Update own profile")
         print("5. Logout")
-        choice = input("Enter your choice: ")
+        choice = input("Choose an option form 1-4: ")
         print()
         if choice == "1":
             put_order()
@@ -959,9 +1034,11 @@ def customer_menu():
             print("Logging out.....")
             time.sleep(1)
             print("Logged out!!!")
+            print()
             break
         else:
             print("Wrong choice !!!")
+            print()
 
 # this is the main block that controls flow of this program
 role = login()
