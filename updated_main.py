@@ -50,7 +50,7 @@ def fire_staff():
         with open("users.txt", "r") as file:
             print(f"{'Username':<20} {'Role':<15}") 
             for line in file:
-                username, _, role = line.strip().split(",")
+                username, password, role = line.strip().split(",")
                 print(f"{username:<20} {role:<15}") 
     except FileNotFoundError:
         print("User file not found.")
@@ -65,8 +65,9 @@ def fire_staff():
                     s_users, s_pass, role = l.strip().split(",")
                     if s_users == user:
                         found = True
-                        continue  #skips writing this line
-                    file.write(l) #writing all lines back 
+                        continue #skips writing this line
+                    else:  
+                        file.write(l) #writing all lines back 
         except FileNotFoundError:
             print("User file not found.")
         if found:
@@ -83,6 +84,8 @@ def edit_staff():
         with open("users.txt", "r") as file:
             print(f"{'Username':<20} {'Role':<15}")  # Header for alignment
             for line in file:
+                if role == "administrator":
+                    continue
                 username, _, role = line.strip().split(",")
                 print(f"{username:<20} {role:<15}")  # Even spacing
     except FileNotFoundError:
@@ -908,7 +911,7 @@ def manage_staff():
             hire_staff()
         elif choice == "2":
             fire_staff()
-        elif choice == "2":
+        elif choice == "3":
             edit_staff()
         elif choice == "4":
             print()

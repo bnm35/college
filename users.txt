@@ -6,3 +6,6 @@ darshan,darshan,chef
 rojit,rojit,customer
 deepana,deepana,customer
 anju,anju,customer
+brishav,brishav,customer
+ashim,ashim,customer
+prasamsa,prasamsa,manager
