@@ -46,21 +46,21 @@ def fire_staff():
             print(f"Staff member {user} not found.")
 
 def edit_staff():
-    u = input("Enter the username of the staff member you want to edit: ").strip()
+    user = input("Enter the username of the staff member you want to edit: ").strip()
     file= open ( "users.txt", "r" )
     lines = file.readlines()
     found = False
     update = [] #to store changes
     for l in lines:
         s_u, s_p, stored_role = l.strip().split(",")
-        if s_u == u:
+        if s_u == user:
             found = True
-            print(f"Editing details for {u}:")
+            print(f"Editing details for {user}:")
             n_u = input("Enter new username: ").strip()
             n_p = input("Enter new password: ").strip()
             n_role = input("Enter new role: ").strip()
             update.append(f"{n_u},{n_p},{n_role}\n") #changes into the list
-            print(f"Details for {u} have been updated successfully.")
+            print(f"Details for {user} have been updated successfully.")
         else:
             update.append(l) #no changes so old data into list
 
@@ -69,7 +69,7 @@ def edit_staff():
         file.writelines(update)
         file.close()
     else:
-        print(f"Staff member '{u}' not found.")
+        print(f"Staff member '{user}' not found.")
 
 def sales_report():
     print("Choose a criteria to view the sales report:")

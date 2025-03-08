@@ -1,5 +1,6 @@
 import random
 import time
+import getpass
 username = None
 #a login function, check roles
 def login():
@@ -7,7 +8,7 @@ def login():
     count = 0
     while count < 3:
         user = input("Enter your username: ").strip()
-        password = input("Enter your password: ").strip()
+        password = getpass.getpass("Enter your password: ").strip()
         try:
             with open("users.txt", "r") as file:
                 for l in file:
@@ -103,7 +104,7 @@ def edit_staff():
                     found = True
                     print(f"Editing details for {u}:")
                     n_u = input("Enter new username: ").strip()
-                    n_p = input("Enter new password: ").strip()
+                    n_p = getpass.getpass("Enter new password: ").strip()
                     n_role = input("Enter new role: ").strip()
                     update.append(f"{n_u},{n_p},{n_role}\n") #changes into the list
                     print(f"Details for {u} have been updated successfully.")
@@ -283,7 +284,7 @@ def updating_profile():
 def add_customer():
     while True:
         username = input("Enter the username for the new customer: ").strip()
-        password = input("Enter the password for the new customer: ").strip()
+        password = getpass.getpass("Enter the password for the new customer: ").strip()
         try:
             with open("users.txt", "a") as file:
                 file.write(f"{username},{password},customer\n")
@@ -316,7 +317,7 @@ def delete_customer():
                 lines = file.readlines()
             with open("users.txt", "w") as file:
                 for l in lines:
-                    s_username, s_password, s_role = l.strip().split(",")
+                    s_username, _, s_role = l.strip().split(",")
                     if s_role == "customer":
                         if s_username == username:
                             found = True  
@@ -361,7 +362,7 @@ def edit_customer():
                     found = True
                     print(f"Editing details for {username}:")
                     new_username = input("Enter new username: ").strip()
-                    new_password = input("Enter new password: ").strip()
+                    new_password = getpass.getpass("Enter new password: ").strip()
                     # appends the changes 
                     u_l.append(f"{new_username},{new_password},customer\n")
                     print(f"Details for {username} have been updated successfully.")
