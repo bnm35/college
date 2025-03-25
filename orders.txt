@@ -1,5 +1,7 @@
-101,rojit,Dosa,2,in process
-302,rojit,Samosas,2,in process
-666,rojit,Sushi,4,in process
-102,deepana,Sushi,4,in process
-500,deepana,Dosa,3,in process
+101,rojit,Dosa,4,completed
+666,rojit,Sushi,5,in process
+102,deepana,Sushi,5,in process
+500,deepana,Dosa,6,in process
+495, rojit, Idli, 4, in process
+233, rojit, Dosa, 3, in process
+544, rojit, Dosa, 2, in process

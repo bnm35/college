@@ -5,6 +5,7 @@ username = None
 #a login function, check roles
 def login():
     global username
+    global role
     count = 0
     while count < 3:
         user = input("Enter your username: ").strip()
@@ -85,8 +86,6 @@ def edit_staff():
         with open("users.txt", "r") as file:
             print(f"{'Username':<20} {'Role':<15}")  # Header for alignment
             for line in file:
-                if role == "administrator":
-                    continue
                 username, _, role = line.strip().split(",")
                 print(f"{username:<20} {role:<15}")  # Even spacing
     except FileNotFoundError:
@@ -96,6 +95,7 @@ def edit_staff():
         found = False
         update = [] #to store changes
         try:
+            
             with open("users.txt", "r") as file:
                 lines = file.readlines()
             for l in lines:
@@ -455,13 +455,14 @@ def delete_dishes():
                     category, dish, price = l.strip().split(',')
                     if category not in menu:
                         menu[category] = []
-                        menu[category].append(f"{dish}: {price}")
+                    menu[category].append(f"{dish}: {price}")
         except FileNotFoundError:
             print("Menu file not found.")
         for category, dishes in menu.items():
             print(f"{category} Menu:\t")
             for dish in dishes:
                 print(f"{dish}")
+            print()
         d= input("Enter the name of the dish you want to delete: ").strip().capitalize()
         found = False
         try:
@@ -562,6 +563,15 @@ def view_orders():
 #to tell the customer their order is completed or in process
 def update_order():
     while True:
+        try:
+            with open("orders.txt", "r") as file:
+                lines = file.readlines()
+                print("Orders:")
+                for l in lines:
+                    o_id,c_name,dishes,q,status = l.strip().split(",")
+                    print(f"Order ID: {o_id}, Customer: {c_name}, Dishes: {dishes}, Quantity: {q}, Status: {status}")        
+        except FileNotFoundError:
+            print("Orders file not found.")
         id = input("Enter the order id: ")
         update=[]
         found = False
@@ -573,7 +583,7 @@ def update_order():
                 if o_id == id:
                     found = True
                     n_status = input("Enter the new status: ")
-                    update.append(f"{o_id},{c_name},{dishes},{n_status}\n")
+                    update.append(f"{o_id},{c_name},{dishes},{q},{n_status}\n")
                     print("Change successful")
                 else:
                     update.append(l)
@@ -685,37 +695,48 @@ def request_edit():
 #to place an order this function will be used
 def a_order():
     while True:
+        menu = {}
         try:
-            with open("orders.txt", "r") as file:
-                lines = file.readlines()
-                print("Orders:")
-                for l in lines:
-                    o_id,c_name,dishes,q,status = l.strip().split(",")
-                    print(f"Order ID: {o_id}, Customer: {c_name}, Dishes: {dishes}, Quantity: {q}, Status: {status}")        
+            with open("menu.txt", "r") as file:
+                for l in file:
+                    category, dish, price = l.strip().split(',')
+                    if category not in menu:
+                        menu[category] = []
+                    menu[category].append(f"{dish}: {price}")
         except FileNotFoundError:
-            print("Orders file not found.")
-        print("Order for the above menu:")
-        print()
-        dishes = input("Enter the dishes you want to order: ")
-        o_id = random.randint(1,999)
-        q = input("Quantity: ")
-        c_name = input("Enter your name: ")
+            print("Menu file not found.")
+            return
+        for category, dishes in menu.items():
+            print(f"\n{category} Menu:")
+            for dish in dishes:
+                print(f"  - {dish}")
+        dishes = input("\nEnter the dishes you want to order: ").strip()
+        o_id = random.randint(1, 999)
+        q = input("Quantity: ").strip()
+        c_name = username #input("Enter your name: ").strip()
         try:
             with open("orders.txt", "a") as file:
                 file.write(f"\n{o_id}, {c_name}, {dishes}, {q}, in process")
-            print("Order placed successfully.")
+            print("\nOrder placed successfully!")
             print(f"Your order ID is: {o_id}")
-            print(f"You have ordered {dishes}")
+            print(f"You have ordered: {dishes}")
         except Exception as e:
             print(f"Error placing order: {e}")
-        
-        again = input("Do you want to order more? (yes/no): ").strip().lower()
-        if again!= "yes":
-            return
-        
+        again = input("\nDo you want to order more? (yes/no): ").strip().lower()
+        if again != "yes":
+            return        
 #if a customer doesn't want to eat the dish now this function deletes that order
 def d_order():
-    see_status()
+    try:
+        with open("orders.txt", "r") as file:
+            lines = file.readlines()
+            print("Orders:")
+            for l in lines:
+                o_id,c_name,dishes,q,status = l.strip().split(",")
+                if c_name == username:
+                    print(f"Order ID: {o_id}, Customer: {c_name}, Dishes: {dishes}, Quantity: {q}, Status: {status}")        
+    except FileNotFoundError:
+        print("Orders file not found.")
     while True:
         id = input("Enter the order ID you want to delete: ")
         found = False
@@ -745,7 +766,16 @@ def d_order():
 
 #this function is for customer to edit their placed orders
 def e_order():
-    see_status()
+    try:
+        with open("orders.txt", "r") as file:
+            lines = file.readlines()
+            print("Orders:")
+            for l in lines:
+                o_id,c_name,dishes,q,status = l.strip().split(",")
+                if c_name == username:
+                    print(f"Order ID: {o_id}, Customer: {c_name}, Dishes: {dishes}, Quantity: {q}, Status: {status}")        
+    except FileNotFoundError:
+        print("Orders file not found.")
     while True:
         o_id = input("Enter the order ID you want to edit: ")
         n_q = input("Quantity: ")

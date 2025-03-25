@@ -7,6 +7,6 @@ Japanese,Sushi,250
 Indian,Butter Chicken,400
 Bengali,Dosa,50
 Indian,Lassi,45
-Indian,Paratha,50
 Bengali,Idli,50
 Japanese,Ramen,300
+Italian,Garlic bread,100

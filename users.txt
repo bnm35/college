@@ -3,9 +3,9 @@ neeju,neeju,manager
 rajita,rajita,chef
 smarika,smarika,chef
 darshan,darshan,chef
-rojit,rojit,customer
+rojit,rojita,customer
 deepana,deepana,customer
 anju,anju,customer
 brishav,brishav,customer
-ashim,ashim,customer
+aros,arrow,manager
 prasamsa,prasamsa,manager
