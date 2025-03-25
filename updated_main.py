@@ -5,7 +5,6 @@ username = None
 #a login function, check roles
 def login():
     global username
-    global role
     count = 0
     while count < 3:
         user = input("Enter your username: ").strip()
